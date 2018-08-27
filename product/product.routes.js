@@ -18,6 +18,8 @@ router.get('/:id', product_controller.findOne);
 router.put('/:id', product_controller.update);
 // Delete one
 router.delete('/:id', product_controller.delete);
+// Update a field
+router.patch('/:id', product_controller.patch);
 
 
 module.exports = router;

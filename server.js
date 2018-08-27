@@ -14,10 +14,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/products', product);
-app.set('port',process.env.PORT || 3000);
+
+// When deploy you can get the port where the process is running
+// You can also set 3000 for default
+app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), () => {
-  console.log("server up in port 3000");
+  console.log(`started at port: ${app.get('port')}`);
 });
 
 

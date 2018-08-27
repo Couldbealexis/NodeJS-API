@@ -6,7 +6,7 @@ let ProductSchema = new Schema({
     type: String, 
     required: true, 
     max: 100,
-    minlength: 5,
+    minlength: 3,
     trim: true
   },
   price: {
