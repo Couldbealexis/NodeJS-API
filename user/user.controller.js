@@ -1,22 +1,15 @@
-const Product = require('./product.model');
+const User = require('./user.model');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash')
 
-//Simple version, without validation or sanitation
-exports.test = function (req, res) {
-    res.send('Greetings from the Test controller!');
-};
 
 exports.create = function (req, res) {
-  let product = new Product(
-      {
-          name: req.body.name,
-          price: req.body.price
-      }
-  );
+  let body = _.pick(req.body, [ 'email', 'password' ]);
 
-  product.save().then( doc => {
-    res.send(product);
+  let user = new User(body);
+
+  user.save().then( doc => {
+    res.send(user);
   }).catch( err => {
     res.status(400).send({
       message: err.message || "cannot save."
@@ -26,9 +19,9 @@ exports.create = function (req, res) {
 
 
 exports.findAll = (req, res) => {
-  Product.find({}).then(
-    products => {
-      res.send({products});
+  User.find({}).then(
+    users => {
+      res.send({users});
     }).catch(err => {
       res.status(400).send({
         message: err.message || "cannot retrive."
@@ -43,13 +36,13 @@ exports.findOne = (req, res) => {
 
   let id = new ObjectID(req.params.id);
   
-  Product.findOne(id).then(product => {
-    if(!product){
+  User.findOne(id).then(user => {
+    if(!user){
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });
     }
-    res.send(product);
+    res.send(user);
   }).catch(err => {
     return res.status(400).send({
       message: err.message || "cannot get."
@@ -63,24 +56,24 @@ exports.update = (req, res) => {
     return res.status(400).send();
 
   let id = new ObjectID(req.params.id);
-  Product.findByIdAndUpdate(req.params.id, {
+  User.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     price: req.body.price 
-  }, {new:true}).then( product => {
-    if(!product){
+  }, {new:true}).then( user => {
+    if(!user){
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });
     }
-    res.send(product);
+    res.send(user);
   }).catch( err => {
     if(err.kind === 'ObjectId') {
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });                
     }
     return res.status(500).send({
-      message: "Error updating product with id " + req.params.id
+      message: "Error updating user with id " + req.params.id
     });
   });
 };
@@ -92,22 +85,22 @@ exports.delete = (req, res) => {
 
   let id = new ObjectID(req.params.id);
 
-  Product.findByIdAndRemove(req.params.id)
-  .then( product => {
-    if(!product){
+  User.findByIdAndRemove(req.params.id)
+  .then( user => {
+    if(!user){
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });
     }
-    res.send({ message: `Product deleted` });
+    res.send({ message: `User deleted` });
   }).catch( err => {
     if(err.kind === 'ObjectId' || err.name === 'NotFound') {
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });                
     }
     return res.status(500).send({
-      message: "Error updating product with id " + req.params.id
+      message: "Error updating user with id " + req.params.id
     });
   });
 
@@ -124,23 +117,23 @@ exports.patch = (req, res) => {
 
   body.updatedAt = new Date().getTime();
 
-  Product.findByIdAndUpdate(req.params.id, {
+  User.findByIdAndUpdate(req.params.id, {
     $set: body 
-  }, {new:true}).then( product => {
-    if(!product){
+  }, {new:true}).then( user => {
+    if(!user){
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });
     }
-    res.send(product);
+    res.send(user);
   }).catch( err => {
     if(err.kind === 'ObjectId') {
       return res.status(404).send({
-        message: `Not found. Product with id ${id}`
+        message: `Not found. User with id ${id}`
       });                
     }
     return res.status(500).send({
-      message: "Error updating product with id " + req.params.id
+      message: "Error updating user with id " + req.params.id
     });
   });
 
