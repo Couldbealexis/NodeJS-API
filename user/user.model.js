@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const validator = require('validator')
+const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 let UserSchema = new Schema({
   
@@ -30,17 +32,28 @@ let UserSchema = new Schema({
       require: true
     }
   }]
-
-},{ 
-  
+},{
   timestamps: true 
 });
 
-// UserSchema.virtual('info').get(function () {
-//   return this.name + ': $' + this.price;
-// });
+// Override method toJSON - Sends back what you want and not all the model.
+UserSchema.methods.toJSON = function(){
+  var user = this;
+  var userObject = user.toObject();
 
+  return _.pick(userObject, ['_id', 'email']);
+};
 
+// Create a new method in order to create tokens
+UserSchema.methods.generateAuthToken = function() {
+  var user = this;
+  var access = 'auth';
+  var token = jwt.sign({_id: user._id.toHexString(), access}, 'secret123').toString();
+  user.tokens = user.tokens.concat([{access, token}]);
+  return user.save().then( () => {
+    return token;
+  });
+};
 
 // Export the model
 module.exports = mongoose.model('User', UserSchema);
