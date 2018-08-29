@@ -3,6 +3,11 @@ const {ObjectID} = require('mongodb');
 const _ = require('lodash')
 
 
+exports.me = (req, res) => {
+  res.send(req.user);
+};
+
+
 exports.create = function (req, res) {
   let body = _.pick(req.body, [ 'email', 'password' ]);
 

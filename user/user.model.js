@@ -55,5 +55,25 @@ UserSchema.methods.generateAuthToken = function() {
   });
 };
 
+// Create a search method used in the schema 
+UserSchema.statics.findByToken = function(token){
+  var User = this;
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, 'secret123');
+  } catch(e){
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    '_id': decoded,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+
+};
+
+
 // Export the model
 module.exports = mongoose.model('User', UserSchema);

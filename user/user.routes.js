@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const {authenticate} = require('../middleware/authenticate');
 
 const user_controller = require('./user.controller');
 
+// Private route - Profile
+router.get('/me', authenticate, user_controller.me);
 // Create new
 router.post('/', user_controller.create);
 // Retrieve all
@@ -15,6 +18,8 @@ router.put('/:id', user_controller.update);
 router.delete('/:id', user_controller.delete);
 // Update a field
 router.patch('/:id', user_controller.patch);
+
+
 
 
 module.exports = router;
