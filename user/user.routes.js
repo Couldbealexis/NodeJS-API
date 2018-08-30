@@ -6,6 +6,10 @@ const user_controller = require('./user.controller');
 
 // Private route - Profile
 router.get('/me', authenticate, user_controller.me);
+// Login
+router.post('/login', user_controller.login);
+// Logout
+router.delete('/logout', authenticate, user_controller.logout);
 // Create new
 router.post('/', user_controller.create);
 // Retrieve all

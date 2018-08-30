@@ -1,10 +1,33 @@
 const User = require('./user.model');
 const {ObjectID} = require('mongodb');
-const _ = require('lodash')
+const _ = require('lodash');
+const bcrypt = require('bcryptjs')
 
 
 exports.me = (req, res) => {
   res.send(req.user);
+};
+
+
+exports.login = (req, res) => {
+  let body = _.pick(req.body, [ 'email', 'password' ]);
+
+  User.findByCredentials(body.email, body.password).then((user) => {
+    return user.generateAuthToken().then( (token) => {
+      res.header('x-auth', token).send(user);
+    });
+  }).catch( (e) => {
+    res.status(400).send();
+  });
+};
+
+
+exports.logout = (req, res) => {
+  req.user.removeToken(req.token).then( () => {
+    res.status(200).send();
+  }).catch( (e) => {
+    res.status(404).send();
+  });
 };
 
 
@@ -120,7 +143,7 @@ exports.patch = (req, res) => {
 
   let id = new ObjectID(req.params.id);
 
-  let body = _.pick(req.body, ['name', 'price']);
+  let body = _.pick(req.body, ['email', 'password']);
 
   body.updatedAt = new Date().getTime();
 
