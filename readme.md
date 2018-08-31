@@ -10,17 +10,17 @@ This project use:
 ### RoadMap ###
 
 - [x] Login.
-- [ ] Different user types.
-- [ ] Admin capabilities.
-- [ ] Registered User capabilities.
-- [ ] Routes for Everyone.
+- [x] Different user types.
+- [x] Admin capabilities.
+- [x] Registered User capabilities.
+- [x] Routes for Everyone.
 - [x] CRUD Products.
 - [x] CRUD Users.
 - [ ] Sortable Products (Name).
 - [ ] Sortable Products (Likes).
 - [ ] Pagination Functionality.
 - [ ] Search Functionality.
-- [ ] User like a product.
+- [x] User like a product.
 - [ ] User buy a product.
 - [ ] Log of all the buys.
 
@@ -29,7 +29,6 @@ This project use:
 	{
 	    id: int,
 	    name: string,
-	    npc: string,
 	    stock: int,
 	    price: int,
 	    likes: int,

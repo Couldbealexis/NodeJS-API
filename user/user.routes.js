@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {authenticate} = require('../middleware/authenticate');
+const {authenticate, adminAuthenticate} = require('../middleware/authenticate');
 
 const user_controller = require('./user.controller');
 
@@ -17,11 +17,11 @@ router.get('/', user_controller.findAll);
 // Retrieve one
 router.get('/:id', user_controller.findOne);
 // Update one 
-router.put('/:id', user_controller.update);
+router.put('/:id', authenticate, user_controller.update);
 // Delete one
-router.delete('/:id', user_controller.delete);
+// router.delete('/:id', adminAuthenticate, user_controller.delete);
 // Update a field
-router.patch('/:id', user_controller.patch);
+router.patch('/:id', authenticate, user_controller.patch);
 
 
 

@@ -13,6 +13,14 @@ let ProductSchema = new Schema({
     type: Number, 
     required: true
   },
+  stock: {
+    type: Number,
+    default: 0
+  },
+  likes: {
+    type: Number,
+    default: 0
+  }
 },{ 
   // Adds automatically createdAt and updatedAt
   timestamps: true 

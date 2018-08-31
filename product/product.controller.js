@@ -1,17 +1,46 @@
 const Product = require('./product.model');
+// const User = require('./user.model');
 const {ObjectID} = require('mongodb');
-const _ = require('lodash')
+const _ = require('lodash');
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
     res.send('Greetings from the Test controller!');
 };
 
+exports.like = (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) 
+    return res.status(400).send();
+
+  let id = new ObjectID(req.params.id);
+  Product.findOne(id).then(product => {
+    if(!product){
+      return res.status(404).send({
+        message: `Not found. Product with id ${id}`
+      });
+    }
+    product.likes += 1;
+    product.updatedAt = new Date().getTime();
+    product.save().then( doc => {
+      res.send(product);
+    }).catch( err => {
+      res.status(400).send({
+        message: err.message || `cannot like the product ${id}.`
+      });
+    });
+  }).catch(err => {
+    return res.status(400).send({
+      message: err.message || "cannot get."
+    });
+  });
+};
+
 exports.create = function (req, res) {
   let product = new Product(
       {
           name: req.body.name,
-          price: req.body.price
+          price: req.body.price,
+          stock: req.body.stock
       }
   );
 
@@ -65,7 +94,9 @@ exports.update = (req, res) => {
   let id = new ObjectID(req.params.id);
   Product.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
-    price: req.body.price 
+    price: req.body.price,
+    stock: req.body.stock,
+    likes: req.body.likes
   }, {new:true}).then( product => {
     if(!product){
       return res.status(404).send({
@@ -120,7 +151,7 @@ exports.patch = (req, res) => {
 
   let id = new ObjectID(req.params.id);
 
-  let body = _.pick(req.body, ['name', 'price']);
+  let body = _.pick(req.body, ['name', 'price', 'stock', 'likes']);
 
   body.updatedAt = new Date().getTime();
 

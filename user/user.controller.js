@@ -1,7 +1,7 @@
 const User = require('./user.model');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 
 exports.me = (req, res) => {
@@ -32,7 +32,7 @@ exports.logout = (req, res) => {
 
 
 exports.create = function (req, res) {
-  let body = _.pick(req.body, [ 'email', 'password' ]);
+  let body = _.pick(req.body, [ 'email', 'password', 'type' ]);
 
   let user = new User(body);
 
@@ -130,7 +130,7 @@ exports.delete = (req, res) => {
       });                
     }
     return res.status(500).send({
-      message: "Error updating user with id " + req.params.id
+      message: "Error deleting user with id " + req.params.id
     });
   });
 

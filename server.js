@@ -6,6 +6,7 @@ const mongoose = require('./db');
 // Get the routes
 const product = require('./product/product.routes');
 const user = require('./user/user.routes');
+const userType = require('./userType/userType.routes')
 
 // initialize our express app
 const app = express();
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/products', product);
 app.use('/users', user);
+app.use('/admin/userType', userType);
 
 // When deploy you can get the port where the process is running
 // You can also set 3000 for default

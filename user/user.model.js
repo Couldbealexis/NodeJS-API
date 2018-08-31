@@ -23,6 +23,9 @@ let UserSchema = new Schema({
     require: true,
     minlength: 6
   },
+  type: {
+    type: mongoose.Schema.Types.ObjectId
+  },
   tokens:[{
     access: {
       type: String,
