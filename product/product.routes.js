@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authenticate, adminAuthenticate} = require('../middleware/authenticate');
+const querymen = require('querymen');
 
 // Require the controllers
 const product_controller = require('./product.controller');
@@ -14,7 +15,7 @@ router.post('/:id/like', authenticate, product_controller.like);
 // Create new
 router.post('/', adminAuthenticate, product_controller.create);
 // Retrieve all
-router.get('/', product_controller.findAll);
+router.get('/', querymen.middleware(), product_controller.findAll);
 // Retrieve one
 router.get('/:id', product_controller.findOne);
 // Update one 

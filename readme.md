@@ -16,10 +16,10 @@ This project use:
 - [x] Routes for Everyone.
 - [x] CRUD Products.
 - [x] CRUD Users.
-- [ ] Sortable Products (Name).
-- [ ] Sortable Products (Likes).
-- [ ] Pagination Functionality.
-- [ ] Search Functionality.
+- [x] Sortable Products (Name).
+- [x] Sortable Products (Likes).
+- [x] Pagination Functionality.
+- [x] Search Functionality.
 - [x] User like a product.
 - [ ] User buy a product.
 - [ ] Log of all the buys.

@@ -5,7 +5,8 @@ const _ = require('lodash');
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
-    res.send('Greetings from the Test controller!');
+  console.log(req.query);
+  res.send('Greetings from the Test controller!');
 };
 
 exports.like = (req, res) => {
@@ -55,7 +56,8 @@ exports.create = function (req, res) {
 
 
 exports.findAll = (req, res) => {
-  Product.find({}).then(
+  let query = req.querymen;
+  Product.find(query.query, query.select, query.cursor).then(
     products => {
       res.send({products});
     }).catch(err => {

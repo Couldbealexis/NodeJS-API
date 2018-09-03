@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors          = require('cors');
 
 // Require the db
 const mongoose = require('./db');
@@ -13,6 +14,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+// CORS
+app.use(cors());
 
 app.use('/products', product);
 app.use('/users', user);
