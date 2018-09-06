@@ -23,6 +23,9 @@ This project use:
 - [x] User like a product.
 - [x] User buy a product.
 - [x] Log of all the buys.
+- [x] Set up env
+- [ ] Make tests
+- [ ] Deploy on Heroku
 
 ### Product data structure
 

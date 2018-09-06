@@ -1,3 +1,5 @@
+require('./config/config');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors          = require('cors');
@@ -24,9 +26,8 @@ app.use('/users', user);
 app.use('/admin/userType', userType);
 app.use('/sales/', sales);
 
-// When deploy you can get the port where the process is running
-// You can also set 3000 for default
-app.set('port', process.env.PORT || 3000);
+const port = process.env.PORT;
+app.set('port', port);
 
 app.listen(app.get('port'), () => {
   console.log(`started at port: ${app.get('port')}`);
