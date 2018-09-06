@@ -1,45 +1,53 @@
 const Header = require('./salesHeader.model');
+const Detail = require('../salesDetail/salesDetail.model');
 const Product = require('../../product/product.model');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 
-function checkOrder(order){
-  OrderArr = order.map( (product) => {
-    Product.findOne({
-      '_id': product.product
-    }).then( p => {
-      if(!p){
-        return false;
-      }
-      if(p.stock < product.quantity){
-        return false;
-      }
-      return true;
-    }).catch( (e) => { 
-      return false;
-    });
-  })
-
-  console.log(OrderArr);
-  
-};
 
 exports.buy = function (req, res) {
-  // let header = new Header({
-  //   customer: req.user._id
-  // });
   let body = _.pick(req.body, ['products']);
-  
-  const IDs = body.products.map(e => e.product);
-  
+  let products = req.products;
+  let order = body.products;
 
-  Product.find({
-    '_id' : { $in: IDs }
-  }).then( docs => console.log(docs)).catch(e => console.log(e));
-  
+  let header = new Header({
+    customer: req.user._id
+  });
+  header.save().then( (h) => {
+    let total = 0;
+    let items = 0;
+    let promises = order.map( (od, index) => {
+      let detail = new Detail({
+        header: header._id,
+        product: products[index]._id,
+        quantity: od.quantity,
+        unitPrice: products[index].price,
+        fullPrice: products[index].price * od.quantity
+      });
+      detail.save();
+      total += products[index].price * od.quantity;
+      items += Number(od.quantity);
+    });
 
-  return res.sendStatus(200);
+    total = total.toFixed(2);
+    Promise.all(promises).then( () => {
+      
+      Header.findOneAndUpdate( header._id, {
+        total: total,
+        items: items,
+        updatedAt: new Date().getTime()
+      }, {new: true}).then( head => {
 
+        res.send(head);
+      }).catch( err => {
+        console.log(err);
+        if(err.kind === 'ObjectId') {
+          return res.sendStatus(404);            
+        }
+        return res.sendStatus(500);
+      });
+    }).catch( e => res.sendStatus(500) );
+  }).catch( e => res.status(500).send(e.message) );
 };
 

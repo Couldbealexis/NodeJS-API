@@ -21,7 +21,7 @@ This project use:
 - [x] Pagination Functionality.
 - [x] Search Functionality.
 - [x] User like a product.
-- [ ] User buy a product.
+- [x] User buy a product.
 - [ ] Log of all the buys.
 
 ### Product data structure

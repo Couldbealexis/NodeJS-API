@@ -11,31 +11,13 @@ let SalesHeaderSchema = new Schema({
     default: 0
   },
   total: {
-    type: Number,
-    default: 0
+    type: Number
   }
 },{ 
   // Adds automatically createdAt and updatedAt
   timestamps: true 
 });
 
-SalesHeaderSchema.statics.checkOrder = function(orderArray){
-  body.products.forEach(element => (product) => {
-    Product.findOne({
-      '_id': product.product
-    }).then( p => {
-      console.log(p);
-      if(!p){
-        return Promise.reject();
-      }
-      if(p.stock < product.quantity){
-        return Promise.reject();
-      }
-    }).catch( (e) => { 
-      return Promise.reject();
-    });
-  });
-};
 
 // Export the model
 module.exports = mongoose.model('SalesHeader', SalesHeaderSchema);
