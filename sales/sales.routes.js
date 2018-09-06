@@ -11,11 +11,11 @@ const salesDetail_controller = require('./salesDetail/salesDetail.controller')
 // Buy products
 router.post('/buy', [authenticate, checkOrder], salesHeader_controller.buy);
 // Retrieve all the purchases for a user
-// router.get('/:user', [authenticate, querymen.middleware()], salesHeader_controller.findForUser);
+router.get('/:user', [authenticate, querymen.middleware()], salesHeader_controller.findForUser);
 // // Retrieve all the purchases for all users
-// router.get('/', [adminAuthenticate, querymen.middleware()], salesHeader_controller.findAll);
+router.get('/', [adminAuthenticate, querymen.middleware()], salesHeader_controller.findAll);
 // // Retrieve one purchase
-// router.get('/:id', authenticate, salesDetail_controller.findOne);
+router.get('/purchase/:id', authenticate, salesDetail_controller.findOne);
 
 
 module.exports = router;

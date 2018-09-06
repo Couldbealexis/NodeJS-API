@@ -23,17 +23,22 @@ let adminAuthenticate = (req, res, next) => {
     if ( !user ){
       return Promise.reject();
     }
-    if(
-      UserType.findOne({_id: user.type})
-              .then(userType => {userType}).description
-    ){
-      return Promise.reject();
-    }
-    req.user = user;
-    req.token = token;
-    next();
+    UserType.findOne({_id: user.type})
+              .then(
+                userType => {
+                  if ( !userType ){
+                    return Promise.reject();
+                  }
+                  if (userType.description != "admin"){
+                    res.status(401).send();
+                  }else{
+                    req.user = user;
+                    req.token = token;
+                    next();
+                  }
+                }).catch(e => res.status(500).send()); 
   }).catch((e) => {
-    res.status(403).send();
+    res.status(401).send();
   });
 };
 

@@ -51,3 +51,29 @@ exports.buy = function (req, res) {
   }).catch( e => res.status(500).send(e.message) );
 };
 
+
+exports.findForUser = (req, res) => {
+  let query = req.querymen;
+  query.query.customer = req.params.user;
+    Header.find( query.query, query.select, query.cursor).then(
+    headers => {
+      res.send({headers});
+    }).catch(err => {
+      res.status(400).send({
+        message: err.message || "cannot retrive."
+      });
+    });
+};
+
+
+exports.findAll = (req, res) => {
+  let query = req.querymen;
+    Header.find( query.query, query.select, query.cursor).then(
+    headers => {
+      res.send({headers});
+    }).catch(err => {
+      res.status(400).send({
+        message: err.message || "cannot retrive."
+      });
+    });
+};
