@@ -22,7 +22,7 @@ This project use:
 - [x] Search Functionality.
 - [x] User like a product.
 - [x] User buy a product.
-- [ ] Log of all the buys.
+- [x] Log of all the buys.
 
 ### Product data structure
 
